@@ -1,32 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Diandian Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <style>
-        #map {
-            height: 90vh; /* 地图高度改为视窗高度的 90% */
-            width: 100vw; /* 地图宽度占满整个页面 */
-        }
-        .popup-img {
-            width: 200px;
-            margin-top: 10px;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0; /* 去掉页面默认外边距 */
-            padding: 0; /* 去掉页面默认内边距 */
-        }
-        h1 {
-            text-align: center; /* 标题居中 */
-            margin: 20px 0; /* 调整标题的外边距 */
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Diandian Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
+  <style>
+    :root{
+      --glass-bg: rgba(255, 255, 255, 0.18);
+      --glass-border: rgba(255, 255, 255, 0.28);
+      --glass-shadow: 0 10px 35px rgba(0, 0, 0, 0.22);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --item-hover: rgba(255,255,255,0.18);
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1220; /* 兜底背景 */
+    }
+
+    /* 顶部标题（也可以删掉） */
+    .title {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1200;
+      color: var(--text);
+      font-weight: 900;
+      letter-spacing: 0.6px;
+      text-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* 地图占满全屏 */
+    #map {
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* 左侧玻璃浮动栏 */
+    #sidebar {
+      position: fixed;
+      top: 64px;
+      left: 18px;
+      z-index: 1300;
+
+      width: 270px;
+      max-height: calc(100vh - 90px);
+      padding: 14px 14px 10px 14px;
+
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      box-shadow: var(--glass-shadow);
+
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    #sidebar .sidebar-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    #sidebar h2 {
+      font-size: 16px;
+      margin: 0;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+    }
+
+    #sidebar .count {
+      font-size: 12px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    #sidebar .hint {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 10px 0;
+      line-height: 1.35;
+    }
+
+    /* 列表滚动 */
+    #city-list-wrap {
+      overflow-y: auto;
+      max-height: calc(100vh - 170px);
+      padding-right: 4px;
+    }
+
+    /* 美化滚动条（Chrome/Edge） */
+    #city-list-wrap::-webkit-scrollbar { width: 8px; }
+    #city-list-wrap::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.22);
+      border-radius: 10px;
+    }
+    #city-list-wrap::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.08);
+      border-radius: 10px;
+    }
+
+    #city-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #city-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      padding: 9px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
+
+    #city-list li:hover {
+      background: var(--item-hover);
+      transform: translateY(-1px);
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(144, 238, 144, 0.95); /* lightgreen */
+      box-shadow: 0 0 0 3px rgba(144, 238, 144, 0.18);
+      flex: 0 0 auto;
+    }
+
+    .city-name {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+    }
+
+    /* 移动端适配：缩窄侧栏 */
+    @media (max-width: 520px) {
+      #sidebar {
+        width: 220px;
+        left: 12px;
+        top: 58px;
+      }
+      .title { font-size: 14px; }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>DD and HH</h1>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-    <script src="map.js"></script> <!-- 地图逻辑 -->
+  <div class="title">DD and HH</div>
+
+  <div id="map"></div>
+
+  <div id="sidebar">
+    <div class="sidebar-header">
+      <h2>Visited</h2>
+      <div class="count" id="visited-count">0</div>
+    </div>
+    <p class="hint">Click a city to open its page. Hover to fly the map.</p>
+    <div id="city-list-wrap">
+      <ul id="city-list"></ul>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="map.js"></script>
 </body>
 </html>
