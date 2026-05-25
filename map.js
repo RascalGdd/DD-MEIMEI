@@ -39,7 +39,7 @@ const cities = [
   { name: "长春", coords: [43.8171, 125.3235], visited: false, photos: ["path/to/changchun1.jpg"] },
   { name: "哈尔滨", coords: [45.8038, 126.5350], visited: false, photos: [] },
   { name: "广州", coords: [23.1291, 113.2644], visited: false, photos: ["path/to/guangzhou1.jpg"] },
-  { name: "深圳", coords: [22.5431, 114.0579], visited: true, url: "/DD-family/cities/ShenZhen/index.html" },
+  { name: "深圳", coords: [22.5431, 114.0579], visited: true, url: "cities/ShenZhen/index.html" },
   { name: "长沙", coords: [28.2278, 112.9389], visited: false, photos: [] },
   { name: "高邮", coords: [32.7852, 119.4432], visited: false, photos: ["path/to/gaoyou1.jpg"] },
 
