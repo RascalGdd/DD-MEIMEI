@@ -107,10 +107,6 @@ const cities = [
 
 const cityListEl = document.getElementById("city-list");
 const visitedCountEl = document.getElementById("visited-count");
-const statsEl = document.getElementById("memory-stats");
-const filmstripTrackEl = document.getElementById("filmstrip-track");
-const randomMemoryButton = document.getElementById("random-memory");
-const themeToggleButton = document.getElementById("theme-toggle");
 const basePath = "";
 
 function normalizeUrl(url) {
@@ -148,27 +144,6 @@ const visitedCities = cities
 visitedCities.sort((a, b) => a.name.localeCompare(b.name, "zh-Hans-CN"));
 visitedCountEl.textContent = `${visitedCities.length} places`;
 
-const totalPhotos = visitedCities.reduce((sum, city) => sum + (city.count || 0), 0);
-const years = new Set(
-  visitedCities
-    .map((city) => String(city.range || "").match(/\d{4}/)?.[0])
-    .filter(Boolean)
-);
-
-if (statsEl) {
-  statsEl.innerHTML = [
-    { value: visitedCities.length, label: "places" },
-    { value: totalPhotos, label: "photos" },
-    { value: years.size || 1, label: "years" },
-    { value: 2, label: "people" }
-  ].map((item) => `
-    <div class="memory-stat">
-      <strong>${item.value}</strong>
-      <span>${item.label}</span>
-    </div>
-  `).join("");
-}
-
 visitedCities.forEach((city) => {
   const li = document.createElement("li");
   li.innerHTML = `
@@ -191,68 +166,6 @@ visitedCities.forEach((city) => {
   cityListEl.appendChild(li);
 });
 
-const featuredMemories = [
-  ...visitedCities.map((city) => ({ city, src: city.cover })),
-  { city: visitedCities.find((city) => city.name === "深圳"), src: "cities/ShenZhen/images/IMG_8470.jpg" },
-  { city: visitedCities.find((city) => city.name === "中山"), src: "cities/ZhongShan/images/IMG_8736.jpg" },
-  { city: visitedCities.find((city) => city.name === "珠海"), src: "cities/ZhuHai/images/1.jpg" },
-  { city: visitedCities.find((city) => city.name === "嘉兴"), src: "cities/JiaXing/images/10.jpg" }
-].filter((memory) => memory.city && memory.src);
-
-if (filmstripTrackEl) {
-  filmstripTrackEl.innerHTML = featuredMemories.map((memory, index) => `
-    <button type="button" data-memory-index="${index}" aria-label="${memory.city.name}">
-      <img src="${memory.src}" alt="${memory.city.name}">
-      <span>${memory.city.name}</span>
-    </button>
-  `).join("");
-
-  filmstripTrackEl.addEventListener("click", (event) => {
-    const button = event.target.closest("button[data-memory-index]");
-    if (!button) return;
-    const memory = featuredMemories[Number(button.dataset.memoryIndex)];
-    if (memory?.city?._url) window.location.href = memory.city._url;
-  });
-}
-
-if (randomMemoryButton) {
-  randomMemoryButton.addEventListener("click", () => {
-    const memory = featuredMemories[Math.floor(Math.random() * featuredMemories.length)];
-    if (!memory) return;
-    map.flyTo(memory.city.coords, 8, { duration: 0.8 });
-    setTimeout(() => {
-      window.location.href = memory.city._url;
-    }, 420);
-  });
-}
-
-if (themeToggleButton) {
-  const savedTheme = localStorage.getItem("dd-map-theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("is-dark");
-    themeToggleButton.textContent = "Day mode";
-  }
-
-  themeToggleButton.addEventListener("click", () => {
-    const isDark = document.body.classList.toggle("is-dark");
-    localStorage.setItem("dd-map-theme", isDark ? "dark" : "day");
-    themeToggleButton.textContent = isDark ? "Day mode" : "Night mode";
-  });
-}
-
-document.addEventListener("click", (event) => {
-  const link = event.target.closest("a[href]");
-  if (!link) return;
-  const href = link.getAttribute("href");
-  if (!href || href.startsWith("#") || href.startsWith("http")) return;
-
-  event.preventDefault();
-  document.body.classList.add("is-leaving");
-  setTimeout(() => {
-    window.location.href = href;
-  }, 180);
-});
-
 const bounds = [];
 
 cities.forEach((city) => {
@@ -266,10 +179,10 @@ cities.forEach((city) => {
     ? L.marker(city.coords, {
         icon: L.divIcon({
           className: "",
-          html: `<div class="visited-marker"><img src="${city.cover}" alt="${city.name}"></div>`,
-          iconSize: [46, 46],
-          iconAnchor: [23, 23],
-          popupAnchor: [0, -20]
+          html: '<div class="visited-marker"></div>',
+          iconSize: [16, 16],
+          iconAnchor: [8, 8],
+          popupAnchor: [0, -10]
         })
       }).addTo(map)
     : L.circleMarker(city.coords, {

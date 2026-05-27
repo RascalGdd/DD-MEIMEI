@@ -42,8 +42,7 @@
     .title {
       position: fixed;
       top: 22px;
-      left: 50%;
-      transform: translateX(-50%);
+      right: 24px;
       z-index: 1200;
       color: rgba(37, 37, 33, 0.86);
       font-size: clamp(18px, 3vw, 34px);
@@ -52,7 +51,6 @@
       text-shadow: 0 2px 18px rgba(255, 255, 255, 0.75);
       user-select: none;
       pointer-events: none;
-      white-space: nowrap;
     }
 
     #map {
@@ -237,188 +235,18 @@
     }
 
     .visited-marker {
-      width: 46px;
-      height: 46px;
+      width: 16px;
+      height: 16px;
       border: 2px solid #fff;
       border-radius: 999px;
       background: #4b8b62;
       box-shadow: 0 0 0 6px rgba(75, 139, 98, 0.18), 0 10px 22px rgba(31, 95, 66, 0.24);
-      overflow: hidden;
-    }
-
-    .visited-marker img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .home-actions {
-      position: fixed;
-      right: 22px;
-      bottom: 138px;
-      z-index: 1300;
-      display: flex;
-      gap: 8px;
-    }
-
-    .home-actions button {
-      min-height: 38px;
-      padding: 8px 12px;
-      border: 1px solid var(--glass-border);
-      border-radius: 999px;
-      color: var(--text);
-      background: var(--glass-bg);
-      box-shadow: 0 12px 32px rgba(36, 30, 20, 0.12);
-      cursor: pointer;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .memory-stats {
-      position: fixed;
-      right: 22px;
-      top: 82px;
-      z-index: 1300;
-      display: grid;
-      grid-template-columns: repeat(2, minmax(84px, 1fr));
-      gap: 8px;
-      width: min(230px, calc(100vw - 44px));
-    }
-
-    .memory-stat {
-      padding: 12px;
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      color: var(--text);
-      background: var(--glass-bg);
-      box-shadow: 0 12px 32px rgba(36, 30, 20, 0.12);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .memory-stat strong {
-      display: block;
-      font-size: 24px;
-      line-height: 1;
-    }
-
-    .memory-stat span {
-      display: block;
-      margin-top: 5px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .filmstrip {
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      z-index: 1300;
-      width: min(720px, calc(100vw - 44px));
-      padding: 9px;
-      transform: translateX(-50%);
-      border: 1px solid var(--glass-border);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.62);
-      box-shadow: 0 18px 52px rgba(36, 30, 20, 0.18);
-      overflow-x: auto;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-    }
-
-    .filmstrip__track {
-      display: flex;
-      gap: 9px;
-      min-width: max-content;
-    }
-
-    .filmstrip button {
-      position: relative;
-      width: 96px;
-      height: 64px;
-      padding: 0;
-      border: 0;
-      border-radius: 10px;
-      overflow: hidden;
-      cursor: pointer;
-      background: #d8d0c2;
-    }
-
-    .filmstrip img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.24s ease;
-    }
-
-    .filmstrip button:hover img {
-      transform: scale(1.08);
-    }
-
-    .filmstrip span {
-      position: absolute;
-      left: 6px;
-      bottom: 6px;
-      padding: 3px 6px;
-      border-radius: 999px;
-      color: #fff;
-      background: rgba(0, 0, 0, 0.5);
-      font-size: 11px;
-    }
-
-    body.is-dark {
-      --glass-bg: rgba(28, 28, 24, 0.72);
-      --glass-border: rgba(255, 255, 255, 0.16);
-      --text: rgba(255, 252, 244, 0.92);
-      --muted: rgba(255, 252, 244, 0.66);
-      --item-hover: rgba(255, 255, 255, 0.1);
-      background: #141411;
-    }
-
-    body.is-dark.map-home::before {
-      background:
-        linear-gradient(90deg, rgba(13, 14, 12, 0.72), transparent 42%),
-        linear-gradient(180deg, rgba(0, 0, 0, 0.28), transparent 36%, rgba(0, 0, 0, 0.5));
-      mix-blend-mode: normal;
-    }
-
-    body.is-dark .title {
-      color: rgba(255, 252, 244, 0.9);
-      text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
-    }
-
-    body.is-dark .leaflet-tile-pane {
-      filter: saturate(0.55) contrast(1.02) brightness(0.62);
-    }
-
-    body.is-dark .filmstrip {
-      background: rgba(28, 28, 24, 0.66);
-    }
-
-    body.is-dark .city-popup {
-      color: rgba(255, 252, 244, 0.92);
-      background: #1f201b;
-    }
-
-    body.is-dark .city-popup strong,
-    body.is-dark .city-popup a {
-      color: rgba(255, 252, 244, 0.94);
-    }
-
-    body.is-dark .city-popup span {
-      color: rgba(255, 252, 244, 0.66);
     }
 
     @media (max-width: 620px) {
       .title {
         top: 14px;
-        left: 14px;
-        transform: none;
-        max-width: calc(100vw - 28px);
-        overflow: hidden;
-        text-overflow: ellipsis;
+        right: 14px;
       }
 
       #sidebar {
@@ -431,19 +259,6 @@
 
       #city-list-wrap {
         max-height: calc(48vh - 104px);
-      }
-
-      .memory-stats {
-        display: none;
-      }
-
-      .home-actions {
-        right: 12px;
-        bottom: calc(48vh + 26px);
-      }
-
-      .filmstrip {
-        display: none;
       }
     }
   </style>
@@ -463,17 +278,6 @@
     <div id="city-list-wrap">
       <ul id="city-list"></ul>
     </div>
-  </div>
-
-  <div class="memory-stats" id="memory-stats" aria-label="Memory stats"></div>
-
-  <div class="home-actions" aria-label="Map actions">
-    <button type="button" id="random-memory">Random memory</button>
-    <button type="button" id="theme-toggle">Night mode</button>
-  </div>
-
-  <div class="filmstrip" aria-label="Featured memories">
-    <div class="filmstrip__track" id="filmstrip-track"></div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
