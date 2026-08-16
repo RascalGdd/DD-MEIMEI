@@ -25,6 +25,18 @@ const cities = [
   { name: "布宜诺斯艾利斯", coords: [-34.6037, -58.3816], visited: false },
 
   {
+    name: "曼谷",
+    coords: [13.7563, 100.5018],
+    visited: true,
+    url: "cities/Bangkok/index.html",
+    cover: "cities/Bangkok/media/cover.jpg",
+    range: "2026.07.29 - 07.30",
+    count: 1,
+    mediaLabel: "video",
+    note: "四面佛、CentralWorld、水门市场和曼谷第一夜"
+  },
+
+  {
     name: "中山",
     coords: [22.5159, 113.3926],
     visited: true,
@@ -123,12 +135,13 @@ function normalizeUrl(url) {
 function popupHtml(city) {
   const url = normalizeUrl(city.url);
   const cover = city.cover || "";
+  const mediaLabel = city.mediaLabel || "photos";
   return `
     <div class="city-popup">
       ${cover ? `<img src="${cover}" alt="${city.name}">` : ""}
       <div class="city-popup__body">
         <strong>${city.name}</strong>
-        <span>${city.range || "Visited"} · ${city.count || 0} photos</span>
+        <span>${city.range || "Visited"} · ${city.count || 0} ${mediaLabel}</span>
         <span>${city.note || ""}</span>
         ${url ? `<a href="${url}">Open album →</a>` : ""}
       </div>
@@ -146,11 +159,12 @@ visitedCountEl.textContent = `${visitedCities.length} places`;
 
 visitedCities.forEach((city) => {
   const li = document.createElement("li");
+  const mediaLabel = city.mediaLabel || "photos";
   li.innerHTML = `
     <img class="city-thumb" src="${city.cover}" alt="${city.name}">
     <span>
       <span class="city-name">${city.name}</span>
-      <span class="city-meta">${city.range} · ${city.count} photos</span>
+      <span class="city-meta">${city.range} · ${city.count} ${mediaLabel}</span>
       <span class="city-note">${city.note}</span>
     </span>
   `;
