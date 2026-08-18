@@ -30,10 +30,10 @@ const cities = [
     visited: true,
     url: "cities/Bangkok/index.html",
     cover: "cities/Bangkok/media/cover.jpg",
-    range: "2026.07.29 - 07.30",
-    count: 1,
-    mediaLabel: "video",
-    note: "四面佛、CentralWorld、水门市场和曼谷第一夜"
+    range: "2026.07.29 - 07.31",
+    count: 2,
+    mediaLabel: "videos",
+    note: "四面佛、Terminal 21、夜市和曼谷的两天"
   },
 
   {
